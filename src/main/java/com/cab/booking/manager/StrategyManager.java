@@ -22,7 +22,7 @@ public class StrategyManager{
         return new DefaultPricingStrategy();
     }
 
-    public DriverMatchingStrategy determineDriverMatchingStrategy(TripMetaData tripMetaData){
+    public DriverMatchingStrategy determineDriverMatchingStrategy(){
         return new LeastTimeDriverMatchingStrategy();
     }
 

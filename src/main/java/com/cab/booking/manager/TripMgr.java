@@ -7,10 +7,15 @@ import com.cab.booking.entities.TripMetaData;
 import com.cab.booking.strategy.DriverMatchingStrategy;
 import com.cab.booking.strategy.PricingStrategy;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class TripMgr {
     private static TripMgr tripMgrInstance;
     RiderMgr riderMgrInstance;
     DriverMgr driverMgrInstance;
+    List<String> driverList;
     private TripMgr(){};
 
     public static TripMgr getTripMgrInstance(){
@@ -21,16 +26,30 @@ public class TripMgr {
     }
 
     public void CreateTrip(Rider rider, String src, String dest){
-        Rider rider1 = new Rider("Abhishek", 5);
-        Driver driver1 = new Driver("Shambhu", true, 5);
+
+        DriverMatchingStrategy driverMatchingStrategy = StrategyManager.getStrategyMgrInstance().determineDriverMatchingStrategy();
+        driverList = driverMatchingStrategy.matchDriver();
+
+        System.out.println(driverList);
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose the  driver by name: ");
+        String selectedDriver = sc.nextLine();
+        Driver driver1 = DriverMgr.getDriverMgrInstance().getDriver(selectedDriver);
+
+        while(driver1 == null){
+            System.out.println("Driver not in the list, choose again");
+            selectedDriver = sc.nextLine();
+            driver1 = DriverMgr.getDriverMgrInstance().getDriver(selectedDriver);
+        }
+
         TripMetaData tripMetaData = new TripMetaData(rider.getRiderRating(), driver1.getDriverRating(), src, dest);
-        DriverMatchingStrategy driverMatchingStrategy = StrategyManager.getStrategyMgrInstance().determineDriverMatchingStrategy(tripMetaData);
-        Driver assignedDriver = driverMatchingStrategy.matchDriver(tripMetaData);
+
 
         PricingStrategy pricingStrategy = StrategyManager.getStrategyMgrInstance().determinePricingStrategy(tripMetaData);
         double price = pricingStrategy.calculatePrice(tripMetaData);
 
-        Trip trip = new Trip(rider1, assignedDriver, src, dest, 7, price,pricingStrategy);
+        Trip trip = new Trip(rider, driver1, src, dest, 7, price,pricingStrategy);
         System.out.println("trip is from : " + trip.getSrcLoc() + " to " + trip.getDstLoc());
         System.out.println("Driver is : " + trip.getDriver().getDriverName());
         System.out.println("Rider is : " + trip.getRider().getRiderName());

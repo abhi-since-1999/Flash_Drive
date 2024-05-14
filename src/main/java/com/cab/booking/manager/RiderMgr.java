@@ -7,20 +7,22 @@ import lombok.Setter;
 import java.util.HashMap;
 
 @Getter
+@Setter
 public class RiderMgr {
     private static RiderMgr riderMgrInstance;
     private HashMap<String, Rider> riderHashMap;
 
     private RiderMgr(){};  //to make it a singleton class
 
-    private static RiderMgr getRiderMgrInstance(){
+    public static RiderMgr getRiderMgrInstance(){
         if(riderMgrInstance == null){
             riderMgrInstance = new RiderMgr();
         }
         return riderMgrInstance;
     }
 
-    private void addRider(String name, Rider rider){
+    public void addRider(String name, Rider rider){
+        riderHashMap = new HashMap<>();
         riderHashMap.put(name, rider);
     }
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Driver {
     private String driverName;
-    private boolean avail;
+    private String vehicleType;
     private int driverRating;
+
 }
