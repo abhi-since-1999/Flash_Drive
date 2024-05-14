@@ -30,7 +30,7 @@ public class TripMgr {
         DriverMatchingStrategy driverMatchingStrategy = StrategyManager.getStrategyMgrInstance().determineDriverMatchingStrategy();
         driverList = driverMatchingStrategy.matchDriver();
 
-        System.out.println(driverList);
+        System.out.println("Available drivers: " + driverList);
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose the  driver by name: ");
